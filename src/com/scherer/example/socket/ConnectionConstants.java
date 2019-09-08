@@ -16,7 +16,7 @@ public class ConnectionConstants {
 	/**
 	 * The port for the socket connection.
 	 */
-	public static final int PORT = 6666;
+	public static final int PORT = 8888;
 
 	private ConnectionConstants() {
 		// There is no need to call this constructor.
