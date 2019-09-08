@@ -8,7 +8,7 @@ This Java project shows an example of transmitting XML data over a socket connec
 
 2) Run Server.java (server will wait for a socket connection from client)
 
-3) Client.java (client will connect to server via a socket connection and send the xml data)
+3) Run Client.java (client will connect to server via a socket connection and send the xml data)
 
 ## Output and Termination
 
