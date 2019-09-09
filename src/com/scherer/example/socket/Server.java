@@ -1,6 +1,7 @@
 package com.scherer.example.socket;
 
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -43,23 +44,56 @@ public class Server {
 
 	/*
 	 * Waits for a connection from the Client. Upon accepting a connection, data is
-	 * read from the socket and returned as a String.
+	 * read from the socket and returned as a String. An acknowledgment is also sent
+	 * to the Client.
 	 */
 	private static String waitForSocketConnection() throws IOException {
 		String xml = null;
 		ServerSocket serverSocket = null;
+		Socket socket = null;
+		DataOutputStream dataOutputStream = null;
+		DataInputStream dataInputStream = null;
 
 		try {
 			serverSocket = new ServerSocket(ConnectionConstants.PORT);
-			Socket socket = serverSocket.accept();
+			socket = serverSocket.accept();
 
 			// Blocked, waiting here for a Client connection...
 
-			DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
+			// Create the input stream for receiving data from the Client
+			dataInputStream = new DataInputStream(socket.getInputStream());
+
+			// Create the output stream for sending an acknowledgment to the Client
+			dataOutputStream = new DataOutputStream(socket.getOutputStream());
+
 			xml = dataInputStream.readUTF();
+
+			// Send an acknowledgement
+			dataOutputStream.writeUTF("Platform Data Received");
 		} finally {
 			if (serverSocket != null) {
 				serverSocket.close();
+			}
+			if (dataOutputStream != null) {
+				try {
+					dataOutputStream.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			if (dataInputStream != null) {
+				try {
+					dataInputStream.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			if (socket != null) {
+				try {
+					socket.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 
